@@ -1,0 +1,104 @@
+create database darshan;
+use darshan;
+
+create table  DigitalExhibit (
+    ArtID INT PRIMARY KEY,
+    Title VARCHAR(100),
+    ArtistName VARCHAR(100),
+    Category VARCHAR(50),
+    YearCreated YEAR,
+    FileType VARCHAR(10),
+    Resolution VARCHAR(20),
+    PriceUSD DECIMAL(10,2),
+    Views INT,
+    Likes INT,
+    ExhibitRoom VARCHAR(30),
+	UploadDate DATE);
+    
+    insert into DigitalExhibit values
+(1, 'Neon Dreams', 'Ava Lumen', 'Abstract', 2023, 'JPG', '1920x1080', 250.00, 1200, 350, 'Room A',  '2024-02-15'),
+(2, 'Cyber Sakura', 'Kenji Mori', 'Surrealism', 2022, 'PNG', '2048x2048', 180.50, 980, 410, 'Room B',  '2024-01-10'),
+(3, 'Fractal Bloom', 'Lena Quartz', 'Generative', 2024, 'GIF', '1080x1080', 320.00, 1300, 500, 'Room C', '2024-05-05'),
+(4, 'Pixel Wave', 'Neo Byte', 'Pixel Art', 2021, 'JPG', '1280x720', 90.00, 800, 230, 'Room A',  '2024-03-21'),
+(5, 'Light Echo', 'Zara Nova', 'AI-Art', 2023, 'MP4', '3840x2160', 560.00, 1500, 700, 'Room D',  '2024-04-01'),
+(6, 'Glitch Spirit', 'Max Glitch', 'Glitch', 2022, 'GIF', '1920x1080', 199.99, 760, 310, 'Room C',  '2024-03-11'),
+(7, 'Echo Nebula', 'Vega Ray', 'Sci-Fi', 2024, 'PNG', '2560x1440', 450.00, 890, 430, 'Room E',  '2024-05-20'),
+(8, 'Code Garden', 'Mira Byte', 'Tech-Art', 2023, 'SVG', '1024x768', 150.00, 670, 210, 'Room B', '2024-02-05'),
+(9, 'Solar Drift', 'Orion Dash', 'Abstract', 2021, 'JPG', '1600x900', 300.00, 1100, 390, 'Room A',  '2024-01-28'),
+(10, 'Quantum Tree', 'Aria Zen', 'Generative', 2023, 'PNG', '1920x1920', 275.00, 990, 370, 'Room C',  '2024-03-15'),
+(11, 'Crystal Code', 'Liam Blue', 'Tech-Art', 2022, 'SVG', '1440x900', 125.00, 540, 180, 'Room B', '2024-04-10'),
+(12, 'Virtual Pulse', 'Kira Volt', 'AI-Art', 2024, 'MP4', '2560x1440', 490.00, 1250, 600, 'Room D',  '2024-05-01'),
+(13, 'Dream Matrix', 'Noah Drift', 'Surrealism', 2023, 'JPG', '1920x1080', 210.00, 870, 290, 'Room E',  '2024-02-20'),
+(14, 'Meta Forest', 'Sasha Bloom', 'Nature', 2022, 'PNG', '2048x1152', 160.00, 720, 240, 'Room D',  '2024-01-18'),
+(15, 'Infinite Loop', 'Theo Code', 'Generative', 2024, 'GIF', '1920x1080', 310.00, 1050, 480, 'Room C',  '2024-06-10');
+    
+    
+   select * from digitalexhibit;
+   
+   select title,Category,views, likes from  digitalexhibit;
+   
+   select* from  digitalexhibit where views<760;
+
+   select* from  digitalexhibit where views>760;
+  
+   select title,artistname from  digitalexhibit where filetype='png';
+   
+   select distinct exhibitroom from digitalexhibit;
+   
+   select title,artistname,priceusd from digitalexhibit order by priceusd asc;
+   
+   select title,artistname,category,yearcreated,exhibitroom from digitalexhibit where exhibitroom ='room c' And yearcreated=2024;
+   
+   select title,artistname,priceusd,exhibitroom from digitalexhibit where exhibitroom ='room a' or priceusd >500;
+   
+   select title,exhibitroom from digitalexhibit where exhibitroom in ('room a','room c','room d');
+   
+   select title,priceusd from digitalexhibit where priceusd between 200 and 400;
+   
+   select title from digitalexhibit where title like'c%';
+   select artistname from digitalexhibit where artistname like'%byte';
+   select title from digitalexhibit where title like'_r%';
+   
+   select title,artistname,exhibitroom from digitalexhibit where not exhibitroom ='room c';
+   
+   select title,artistname,priceusd from digitalexhibit where priceusd is null;
+   
+   update digitalexhibit set likes=400 where artid =1;
+   
+   delete from digitalexhibit where artid =4;
+   
+   select count(*) as totalartworks from digitalexhibit;
+   
+   select sum(likes) as totallikes from digitalexhibit;
+   
+   select avg(priceusd) as averageprice from digitalexhibit;
+   
+   select min(priceusd) as lowestprice from digitalexhibit;
+   
+   select max(views) as mostviews from digitalexhibit;
+   
+   select digitalexhibit.title, digitalexhibit.artistname, artists.country from digitalexhibit inner join artists on digitalexhibit.artistname = artists.artistname;
+   
+   select d.title,d.artistname,a.Country from digitalexhibit d left join  Artists a on d.artistname = a.artistname;
+   
+   select a.artistname,a.Country,d.title from Artists a right join digitalexhibit d on d.artistname = a.artistname;
+   
+   
+	select d.artistname, d.title, a.Country from digitalexhibit d left join Artists a on d.artistname = a.artistname
+	union
+	select a.artistname, d.title, a.Country from Artists a right join digitalexhibit d on d.artistname = a.artistname;
+    
+    select category, sum(views) as totalviews from digitalexhibit group by category;
+    
+    select category, sum(likes) as totallikes from digitalexhibit group by category having sum(likes) > 1000;
+    
+    
+    select title, priceusd from digitalexhibit where  priceusd > (select avg(priceusd) from digitalexhibit); 
+    
+    
+    select title, artistname from digitalexhibit where artistname in ( select artistname from digitalexhibit group by artistname having count(*) > 1);
+    
+    select title, exhibitroom, likes from digitalexhibit as d1 where likes = (select max(likes) from digitalexhibit as d2 where d2.exhibitroom = d1.exhibitroom );
+    
+    create view highvalueartworks as select artid, title, artistname, priceusd from digitalexhibit where priceusd  > 300;
+    drop view highvalueartworks;
